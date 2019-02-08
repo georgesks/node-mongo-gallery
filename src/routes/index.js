@@ -8,4 +8,10 @@ router.get("/", (req, res) => {
 
 });
 
+router.get("/images/add", (req, res) => {
+
+    res.render("image_form");
+
+});
+
 module.exports = router;
