@@ -17,7 +17,7 @@ router.get("/images/add", (req, res) => {
 router.post("/images/add", (req, res) => {
 
     console.log(req.body);
-    //console.log(req.file);
+    console.log(req.file);
 
     res.send("Recibido");
     
