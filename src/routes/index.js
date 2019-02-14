@@ -11,15 +11,34 @@ cloudinary.config({
 
 const router = Router();
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
 
-    res.render("images");
+    const photos = await Photo.find();    
+    res.render("images", {
+        photos
+    });
 
 });
 
-router.get("/images/add", (req, res) => {
+router.get("/images/add", async (req, res) => {
 
-    res.render("image_form");
+    const photos = await Photo.find();
+    res.render("image_form", {
+        photos
+    });
+
+});
+
+router.get("/images/delete/:id", async (req, res) => {
+
+    const { id } = req.params;
+
+    const photo = await Photo.findByIdAndDelete(id);
+    const result = await cloudinary.v2.uploader.destroy(photo.public_id);
+
+    console.log(result);
+
+    res.redirect("/images/add");
 
 });
 
@@ -40,7 +59,7 @@ router.post("/images/add", async (req, res) => {
     await newPhoto.save();
     await fs.unlink(req.file.path);
 
-    res.send("Recibido");
+    res.redirect("/");
     
 });
 
